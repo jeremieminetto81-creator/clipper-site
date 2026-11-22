@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clipper — Connexion TikTok</title><link rel="stylesheet" href="../style.css"></head>
+<body>
+<nav><a href="../">Clipper</a><a href="../confidentialite.html">Politique de confidentialité</a><a href="../conditions.html">Conditions d'utilisation</a></nav>
+<main>
+  <h1>Connexion TikTok</h1>
+  <div id="ok" hidden>
+    <p>Copie ce code et colle-le dans la fenêtre de Clipper :</p>
+    <div class="code" id="code"></div>
+    <button id="copier">Copier le code</button>
+  </div>
+  <p id="erreur" hidden></p>
+  <p id="vide" class="discret" hidden>Cette page affiche le code de connexion après l'autorisation dans TikTok.</p>
+</main>
+<script>
+  const p = new URLSearchParams(location.search);
+  const code = p.get("code"), err = p.get("error");
+  if (code) {
+    document.getElementById("ok").hidden = false;
+    document.getElementById("code").textContent = code;
+    document.getElementById("copier").onclick = async (e) => {
+      try { await navigator.clipboard.writeText(code); e.target.textContent = "Copié ✔"; } catch { }
+    };
+  } else if (err) {
+    const el = document.getElementById("erreur");
+    el.hidden = false;
+    el.textContent = "TikTok a refusé la connexion : " + err + " " + (p.get("error_description") || "");
+  } else {
+    document.getElementById("vide").hidden = false;
+  }
+</script>
+</body></html>
